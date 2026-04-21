@@ -13,9 +13,10 @@ import { addPet, loadPets, updatePet } from "./store/actions/pet.actions";
 import { AppState, selectFeaturePets } from "./store/selectors/pet.selector";
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.scss"],
+    selector: "app-root",
+    templateUrl: "./app.component.html",
+    styleUrls: ["./app.component.scss"],
+    standalone: false
 })
 export class AppComponent implements OnInit {
   public form: FormGroup;

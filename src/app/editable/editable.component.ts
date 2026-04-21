@@ -12,9 +12,10 @@ import { EditModeDirective } from "../directives/edit-mode.directive";
 import { ViewModeDirective } from "../directives/view-mode.directive";
 
 @Component({
-  selector: "app-editable",
-  templateUrl: "./editable.component.html",
-  styleUrls: ["./editable.component.scss"],
+    selector: "app-editable",
+    templateUrl: "./editable.component.html",
+    styleUrls: ["./editable.component.scss"],
+    standalone: false
 })
 export class EditableComponent implements OnInit, OnDestroy {
   @Output() updateField: EventEmitter<void> = new EventEmitter();
