@@ -1,9 +1,11 @@
+import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
 import {
   FormArray,
   FormBuilder,
   FormControl,
   FormGroup,
+  ReactiveFormsModule,
   Validators,
 } from "@angular/forms";
 import { Pet } from "./models/pet";
@@ -11,12 +13,22 @@ import { Store } from "@ngrx/store";
 import { Observable } from "rxjs";
 import { addPet, loadPets, updatePet } from "./store/actions/pet.actions";
 import { AppState, selectFeaturePets } from "./store/selectors/pet.selector";
+import { EditableComponent } from "./editable/editable.component";
+import { ViewModeDirective } from "./directives/view-mode.directive";
+import { EditModeDirective } from "./directives/edit-mode.directive";
 
 @Component({
     selector: "app-root",
     templateUrl: "./app.component.html",
     styleUrls: ["./app.component.scss"],
-    standalone: false
+    standalone: true,
+    imports: [
+      CommonModule,
+      ReactiveFormsModule,
+      EditableComponent,
+      ViewModeDirective,
+      EditModeDirective,
+    ],
 })
 export class AppComponent implements OnInit {
   public form: FormGroup;

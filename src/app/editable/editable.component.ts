@@ -7,6 +7,7 @@ import {
   OnInit,
   Output,
 } from "@angular/core";
+import { CommonModule } from "@angular/common";
 import { filter, fromEvent, Subject, switchMap, take, takeUntil } from "rxjs";
 import { EditModeDirective } from "../directives/edit-mode.directive";
 import { ViewModeDirective } from "../directives/view-mode.directive";
@@ -15,7 +16,8 @@ import { ViewModeDirective } from "../directives/view-mode.directive";
     selector: "app-editable",
     templateUrl: "./editable.component.html",
     styleUrls: ["./editable.component.scss"],
-    standalone: false
+    standalone: true,
+    imports: [CommonModule],
 })
 export class EditableComponent implements OnInit, OnDestroy {
   @Output() updateField: EventEmitter<void> = new EventEmitter();
