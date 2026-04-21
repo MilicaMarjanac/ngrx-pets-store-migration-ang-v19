@@ -67,18 +67,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ngrx.io-example:build"
+            "buildTarget": "ngrx.io-example:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ngrx.io-example:build:production"
+              "buildTarget": "ngrx.io-example:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ngrx.io-example:build"
+            "buildTarget": "ngrx.io-example:build"
           }
         },
         "test": {
