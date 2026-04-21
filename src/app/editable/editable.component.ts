@@ -5,6 +5,7 @@ import {
   EventEmitter,
   OnDestroy,
   OnInit,
+  output,
   Output,
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
@@ -13,14 +14,14 @@ import { EditModeDirective } from "../directives/edit-mode.directive";
 import { ViewModeDirective } from "../directives/view-mode.directive";
 
 @Component({
-    selector: "app-editable",
-    templateUrl: "./editable.component.html",
-    styleUrls: ["./editable.component.scss"],
-    standalone: true,
-    imports: [CommonModule],
+  selector: "app-editable",
+  templateUrl: "./editable.component.html",
+  styleUrls: ["./editable.component.scss"],
+  standalone: true,
+  imports: [CommonModule],
 })
 export class EditableComponent implements OnInit, OnDestroy {
-  @Output() updateField: EventEmitter<void> = new EventEmitter();
+  updateField = output<void>();
   @ContentChild(ViewModeDirective) viewModeTpl: ViewModeDirective;
   @ContentChild(EditModeDirective) editModeTpl: EditModeDirective;
 
@@ -62,16 +63,16 @@ export class EditableComponent implements OnInit, OnDestroy {
   private handleEditMode() {
     const clickOutside$ = fromEvent(document, "click").pipe(
       filter(({ target }) => this.element.contains(target) === false),
-      take(1)
+      take(1),
     );
 
     this.editMode$
       .pipe(
         switchMap(() => clickOutside$),
-        takeUntil(this.notifier$)
+        takeUntil(this.notifier$),
       )
       .subscribe(() => {
-        this.updateField.next();
+        this.updateField.emit();
         this.mode = "view";
       });
   }
