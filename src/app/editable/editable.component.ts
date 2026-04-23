@@ -30,7 +30,9 @@ export class EditableComponent {
   public host = inject(ElementRef) as ElementRef<HTMLElement>;
 
   readonly currentView = computed(() => {
-    this.editMode() ? this.editModeTpl().template : this.viewModeTpl().template;
+    return this.editMode()
+      ? this.editModeTpl().template
+      : this.viewModeTpl().template;
   });
 
   constructor() {
