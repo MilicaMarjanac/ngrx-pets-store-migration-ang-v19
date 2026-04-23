@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit, inject } from "@angular/core";
+import { Component, OnInit, effect, inject } from "@angular/core";
 import {
   FormArray,
   FormBuilder,
@@ -34,30 +34,33 @@ export class AppComponent implements OnInit {
   public form: FormGroup;
   public petsData: Pet[] = [];
   public pets$: Observable<Pet[]>;
-  private formBuilder = inject(FormBuilder);
+
   private store = inject(Store<AppState>);
+  readonly pets = this.store.selectSignal(selectFeaturePets);
+
+  private formBuilder = inject(FormBuilder);
+
+  constructor() {
+    effect(() => {
+      const pets = this.pets();
+      this.petsFormArray.clear();
+      pets.forEach((pet) => {
+        this.petsFormArray.push(
+          this.formBuilder.group({
+            name: [pet.name],
+            type: [pet.type],
+          }),
+        );
+      });
+    });
+  }
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      pets: this.formBuilder.array([""]),
+      pets: this.formBuilder.array([]),
     });
-    console.log(selectFeaturePets);
-    this.pets$ = this.store.select(selectFeaturePets);
-    this.pets$.subscribe((pets) => {
-      this.petsData = pets;
-      this.petsFormArray.clear();
 
-      this.loadForm();
-    });
     this.store.dispatch(loadPets());
-  }
-
-  private loadForm() {
-    this.petsData.forEach((pet) => {
-      this.petsFormArray.push(
-        this.formBuilder.group({ name: [pet.name], type: [pet.type] }),
-      );
-    });
   }
 
   private onAdd(pet: Pet) {
@@ -89,16 +92,22 @@ export class AppComponent implements OnInit {
   }
 
   public updateField(index: number) {
-    if (index >= this.petsData.length) {
+    const pets = this.pets();
+
+    if (index >= pets.length) {
       const newPet = {
         ...this.form.value.pets[index],
       };
       this.onAdd(newPet);
+      return;
     }
 
-    this.petsData.map((pet, i) => {
+    pets.forEach((pet, i) => {
       if (index === i) {
-        const editedPet = { id: pet.id, ...this.form.value.pets[index] };
+        const editedPet = {
+          id: pet.id,
+          ...this.form.value.pets[index],
+        };
         this.onEdit(editedPet);
       }
     });

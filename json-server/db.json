@@ -37,8 +37,13 @@
     },
     {
       "id": 8,
-      "name": "Zvekan",
+      "name": "Zveko",
       "type": "Crow"
+    },
+    {
+      "id": 9,
+      "name": "Cvrle",
+      "type": "maca"
     }
   ]
 }
