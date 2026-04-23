@@ -3,32 +3,42 @@
     {
       "id": 1,
       "name": "Whiskers",
-      "type": "cat"
+      "type": "Cat"
     },
     {
       "id": 2,
       "name": "Siri",
-      "type": "squirrel"
+      "type": "Squirrel"
     },
     {
       "id": 3,
       "name": "Frodo",
-      "type": "dogo"
+      "type": "Dogo"
     },
     {
       "id": 4,
       "name": "Kiki",
-      "type": "amazon parrot"
+      "type": "Amazon parrot"
     },
     {
       "id": 5,
       "name": "Helena",
-      "type": "buzzard"
+      "type": "Buzzard"
     },
     {
       "id": 6,
       "name": "Koda",
-      "type": "budgie"
+      "type": "Budgie"
+    },
+    {
+      "id": 7,
+      "name": "Sinos",
+      "type": "Sinosaurus"
+    },
+    {
+      "id": 8,
+      "name": "Zvekan",
+      "type": "Crow"
     }
   ]
 }

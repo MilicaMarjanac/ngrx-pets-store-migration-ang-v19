@@ -1,14 +1,14 @@
 import {
   Component,
   ContentChild,
+  effect,
   ElementRef,
   inject,
-  OnDestroy,
-  OnInit,
   output,
+  signal,
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { filter, fromEvent, Subject, switchMap, take, takeUntil } from "rxjs";
+import { filter, fromEvent, take } from "rxjs";
 import { EditModeDirective } from "../directives/edit-mode.directive";
 import { ViewModeDirective } from "../directives/view-mode.directive";
 
@@ -19,60 +19,50 @@ import { ViewModeDirective } from "../directives/view-mode.directive";
   standalone: true,
   imports: [CommonModule],
 })
-export class EditableComponent implements OnInit, OnDestroy {
+export class EditableComponent {
   updateField = output<void>();
-  @ContentChild(ViewModeDirective) viewModeTpl: ViewModeDirective;
-  @ContentChild(EditModeDirective) editModeTpl: EditModeDirective;
+  @ContentChild(ViewModeDirective) viewModeTpl!: ViewModeDirective;
+  @ContentChild(EditModeDirective) editModeTpl!: EditModeDirective;
 
-  public mode: "view" | "edit" = "view";
-  public notifier$: Subject<void> = new Subject();
-  public editMode: Subject<boolean> = new Subject();
-  public editMode$ = this.editMode.asObservable();
+  public editMode = signal(false);
 
   public host = inject(ElementRef) as ElementRef<HTMLElement>;
+
   public get currentView() {
-    return this.mode === "view"
-      ? this.viewModeTpl.template
-      : this.editModeTpl.template;
+    return this.editMode()
+      ? this.editModeTpl.template
+      : this.viewModeTpl.template;
   }
 
-  ngOnInit() {
-    this.handleViewMode();
-    this.handleEditMode();
-  }
-
-  ngOnDestroy(): void {
-    this.notifier$.next();
-    this.notifier$.complete();
+  constructor() {
+    this.setupEnterEditMode();
+    this.setupExitEditMode();
   }
 
   private get element() {
     return this.host.nativeElement;
   }
 
-  private handleViewMode() {
+  private setupEnterEditMode() {
     fromEvent(this.element, "click")
-      .pipe(takeUntil(this.notifier$))
+      .pipe(take(1))
       .subscribe(() => {
-        this.mode = "edit";
-        this.editMode.next(true);
+        this.editMode.set(true);
       });
   }
 
-  private handleEditMode() {
-    const clickOutside$ = fromEvent(document, "click").pipe(
-      filter(({ target }) => this.element.contains(target as Node) === false),
-      take(1),
-    );
+  private setupExitEditMode() {
+    effect(() => {
+      if (!this.editMode()) return;
+      const clickOutside$ = fromEvent(document, "click").pipe(
+        filter(({ target }) => !this.element.contains(target as Node)),
+        take(1),
+      );
 
-    this.editMode$
-      .pipe(
-        switchMap(() => clickOutside$),
-        takeUntil(this.notifier$),
-      )
-      .subscribe(() => {
+      const subscription = clickOutside$.subscribe(() => {
         this.updateField.emit();
-        this.mode = "view";
+        this.editMode.set(false);
       });
+    });
   }
 }
