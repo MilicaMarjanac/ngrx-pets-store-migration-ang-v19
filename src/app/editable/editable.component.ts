@@ -2,6 +2,7 @@ import {
   Component,
   computed,
   contentChild,
+  DestroyRef,
   effect,
   ElementRef,
   inject,
@@ -10,6 +11,7 @@ import {
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { filter, fromEvent, take } from "rxjs";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { EditModeDirective } from "../directives/edit-mode.directive";
 import { ViewModeDirective } from "../directives/view-mode.directive";
 
@@ -28,6 +30,7 @@ export class EditableComponent {
   public editMode = signal(false);
 
   public host = inject(ElementRef) as ElementRef<HTMLElement>;
+  private destroyRef = inject(DestroyRef);
 
   readonly currentView = computed(() => {
     return this.editMode()
@@ -46,7 +49,10 @@ export class EditableComponent {
 
   private setupEnterEditMode() {
     fromEvent(this.element, "click")
-      .pipe(take(1))
+      .pipe(
+        filter(() => !this.editMode()),
+        takeUntilDestroyed(this.destroyRef),
+      )
       .subscribe(() => {
         this.editMode.set(true);
       });

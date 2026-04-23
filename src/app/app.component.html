@@ -14,31 +14,27 @@
                         </tr>
                     </thead>
                     <tbody formArrayName="pets">
-                        @for (pet of petsFormArray.controls; track pet; let index = $index) {
+                        @for (pet of petsFormArray.controls; track pet.value.id ?? index;let index = $index) {
                         <tr [formGroupName]="index">
                             <td>
-                                @if(getControl(index, 'name')) {
-                                <app-editable (updateField)="updateField(index)">
+                                <app-editable (updateField)="updateField(pet.value.id)">
                                     <ng-template appViewMode>
-                                        {{ getValue(index, 'name') }}
+                                        {{ pet.value.name}}
                                     </ng-template>
                                     <ng-template appEditMode>
-                                        <input [formControl]="getControl(index, 'name')">
+                                        <input type="text" formControlName="name" />
                                     </ng-template>
                                 </app-editable>
-                                }
                             </td>
                             <td>
-                                @if (getControl(index, 'type')) {
-                                <app-editable (updateField)="updateField(index)">
+                                <app-editable (updateField)="updateField(pet.value.id)">
                                     <ng-template appViewMode>
-                                        {{ getValue(index, 'type')}}
+                                        {{ pet.value.type}}
                                     </ng-template>
                                     <ng-template appEditMode>
-                                        <input [formControl]="getControl(index, 'type')">
+                                        <input type="text" formControlName="type" />
                                     </ng-template>
                                 </app-editable>
-                                }
                             </td>
                         </tr>
                         }
