@@ -2,11 +2,10 @@ import {
   Component,
   ContentChild,
   ElementRef,
-  EventEmitter,
+  inject,
   OnDestroy,
   OnInit,
   output,
-  Output,
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { filter, fromEvent, Subject, switchMap, take, takeUntil } from "rxjs";
@@ -27,10 +26,10 @@ export class EditableComponent implements OnInit, OnDestroy {
 
   public mode: "view" | "edit" = "view";
   public notifier$: Subject<void> = new Subject();
-  public editMode = new Subject();
+  public editMode: Subject<boolean> = new Subject();
   public editMode$ = this.editMode.asObservable();
-  constructor(private host: ElementRef) {}
 
+  public host = inject(ElementRef) as ElementRef<HTMLElement>;
   public get currentView() {
     return this.mode === "view"
       ? this.viewModeTpl.template
@@ -62,7 +61,7 @@ export class EditableComponent implements OnInit, OnDestroy {
 
   private handleEditMode() {
     const clickOutside$ = fromEvent(document, "click").pipe(
-      filter(({ target }) => this.element.contains(target) === false),
+      filter(({ target }) => this.element.contains(target as Node) === false),
       take(1),
     );
 

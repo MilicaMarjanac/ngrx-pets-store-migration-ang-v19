@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, inject } from "@angular/core";
 import {
   FormArray,
   FormBuilder,
@@ -18,32 +18,30 @@ import { ViewModeDirective } from "./directives/view-mode.directive";
 import { EditModeDirective } from "./directives/edit-mode.directive";
 
 @Component({
-    selector: "app-root",
-    templateUrl: "./app.component.html",
-    styleUrls: ["./app.component.scss"],
-    standalone: true,
-    imports: [
-      CommonModule,
-      ReactiveFormsModule,
-      EditableComponent,
-      ViewModeDirective,
-      EditModeDirective,
-    ],
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.scss"],
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    EditableComponent,
+    ViewModeDirective,
+    EditModeDirective,
+  ],
 })
 export class AppComponent implements OnInit {
   public form: FormGroup;
   public petsData: Pet[] = [];
   public pets$: Observable<Pet[]>;
-  constructor(
-    private formBuilder: FormBuilder,
-    private store: Store<AppState>
-  ) {}
+  private formBuilder = inject(FormBuilder);
+  private store = inject(Store<AppState>);
 
   ngOnInit() {
     this.form = this.formBuilder.group({
       pets: this.formBuilder.array([""]),
     });
-
+    console.log(selectFeaturePets);
     this.pets$ = this.store.select(selectFeaturePets);
     this.pets$.subscribe((pets) => {
       this.petsData = pets;
@@ -57,7 +55,7 @@ export class AppComponent implements OnInit {
   private loadForm() {
     this.petsData.forEach((pet) => {
       this.petsFormArray.push(
-        this.formBuilder.group({ name: [pet.name], type: [pet.type] })
+        this.formBuilder.group({ name: [pet.name], type: [pet.type] }),
       );
     });
   }
@@ -75,11 +73,11 @@ export class AppComponent implements OnInit {
   }
 
   public addPetFormField() {
-    const petsForm = this.formBuilder.group({
+    const petsFormField = this.formBuilder.group({
       name: ["Add your pet name here", Validators.required],
       type: ["Add your pet type here", Validators.required],
     });
-    this.petsFormArray.push(petsForm);
+    this.petsFormArray.push(petsFormField);
   }
 
   public getControl(index: number, field: string): FormControl {

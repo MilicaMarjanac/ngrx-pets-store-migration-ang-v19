@@ -20,18 +20,19 @@
                                 @if(getControl(index, 'name')) {
                                 <app-editable (updateField)="updateField(index)">
                                     <ng-template appViewMode>
-                                        {{getValue(index, 'name') }}
+                                        {{ getValue(index, 'name') }}
                                     </ng-template>
                                     <ng-template appEditMode>
                                         <input [formControl]="getControl(index, 'name')">
                                     </ng-template>
                                 </app-editable>
                                 }
+                            </td>
                             <td>
                                 @if (getControl(index, 'type')) {
                                 <app-editable (updateField)="updateField(index)">
                                     <ng-template appViewMode>
-                                        {{getValue(index, 'type')}}
+                                        {{ getValue(index, 'type')}}
                                     </ng-template>
                                     <ng-template appEditMode>
                                         <input [formControl]="getControl(index, 'type')">
@@ -44,7 +45,6 @@
                     </tbody>
                 </table>
             </form>
-
         </div>
     </div>
 </div>

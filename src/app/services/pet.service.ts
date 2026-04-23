@@ -1,6 +1,10 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { Pet } from "../models/pet";
-import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from "@angular/common/http";
 import { Observable, throwError } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { environment } from "src/environments/environment";
@@ -14,11 +18,11 @@ export class PetService {
   };
   private endpoint = `${environment.apiUrl}pets`;
 
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   public getPets(): Observable<Pet[]> {
     return this.http
-      .get<Pet>(this.endpoint, this.httpOptions)
+      .get<Pet[]>(this.endpoint, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 

@@ -28,7 +28,7 @@ export const petsReducer = createReducer(
       },
       {
         ...state.entities,
-      }
+      },
     );
     return {
       ...state,
@@ -55,5 +55,5 @@ export const petsReducer = createReducer(
     };
     return { ...state, entities };
   }),
-  on(updatePetFail, (state) => state)
+  on(updatePetFail, (state) => state),
 );

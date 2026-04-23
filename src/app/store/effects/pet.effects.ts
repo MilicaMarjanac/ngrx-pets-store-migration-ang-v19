@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { of } from "rxjs";
 import { catchError, map, switchMap } from "rxjs/operators";
 import { PetService } from "src/app/services/pet.service";
@@ -19,16 +19,18 @@ import {
   providedIn: "root",
 })
 export class PetEffects {
-  constructor(private petService: PetService, private actions$: Actions) {}
+  private petService = inject(PetService);
+  private actions$ = inject(Actions);
+
   loadPets$ = createEffect(() =>
     this.actions$.pipe(ofType(loadPets)).pipe(
       switchMap(() => {
         return this.petService.getPets().pipe(
           map((pets) => loadPetsSuccess({ pets })),
-          catchError((error) => of(loadPetsFail(error)))
+          catchError((error) => of(loadPetsFail(error))),
         );
-      })
-    )
+      }),
+    ),
   );
 
   addPets$ = createEffect(() =>
@@ -38,10 +40,10 @@ export class PetEffects {
           map((pet) => {
             return addPetSuccess({ pet });
           }),
-          catchError((error) => of(addPetFail(error)))
+          catchError((error) => of(addPetFail(error))),
         );
-      })
-    )
+      }),
+    ),
   );
   updatePets$ = createEffect(() =>
     this.actions$.pipe(ofType(updatePet)).pipe(
@@ -50,9 +52,9 @@ export class PetEffects {
           map((pet) => {
             return updatePetSuccess({ pet });
           }),
-          catchError((error) => of(updatePetFail(error)))
+          catchError((error) => of(updatePetFail(error))),
         );
-      })
-    )
+      }),
+    ),
   );
 }
