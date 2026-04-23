@@ -1,6 +1,7 @@
 import {
   Component,
-  ContentChild,
+  computed,
+  contentChild,
   effect,
   ElementRef,
   inject,
@@ -21,18 +22,16 @@ import { ViewModeDirective } from "../directives/view-mode.directive";
 })
 export class EditableComponent {
   updateField = output<void>();
-  @ContentChild(ViewModeDirective) viewModeTpl!: ViewModeDirective;
-  @ContentChild(EditModeDirective) editModeTpl!: EditModeDirective;
+  viewModeTpl = contentChild.required(ViewModeDirective);
+  editModeTpl = contentChild.required(EditModeDirective);
 
   public editMode = signal(false);
 
   public host = inject(ElementRef) as ElementRef<HTMLElement>;
 
-  public get currentView() {
-    return this.editMode()
-      ? this.editModeTpl.template
-      : this.viewModeTpl.template;
-  }
+  readonly currentView = computed(() => {
+    this.editMode() ? this.editModeTpl().template : this.viewModeTpl().template;
+  });
 
   constructor() {
     this.setupEnterEditMode();
@@ -52,7 +51,7 @@ export class EditableComponent {
   }
 
   private setupExitEditMode() {
-    effect(() => {
+    effect((onCleanup) => {
       if (!this.editMode()) return;
       const clickOutside$ = fromEvent(document, "click").pipe(
         filter(({ target }) => !this.element.contains(target as Node)),
@@ -63,6 +62,7 @@ export class EditableComponent {
         this.updateField.emit();
         this.editMode.set(false);
       });
+      onCleanup(() => subscription.unsubscribe());
     });
   }
 }
