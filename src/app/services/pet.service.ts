@@ -13,32 +13,28 @@ import { environment } from "src/environments/environment";
   providedIn: "root",
 })
 export class PetService {
-  private httpOptions = {
-    headers: new HttpHeaders({ "Content-Type": "application/json" }),
-  };
-  private endpoint = `${environment.apiUrl}pets`;
-
   private http = inject(HttpClient);
+  private endpoint = `${environment.apiUrl}pets`;
 
   public getPets(): Observable<Pet[]> {
     return this.http
-      .get<Pet[]>(this.endpoint, this.httpOptions)
+      .get<Pet[]>(this.endpoint)
       .pipe(catchError(this.handleError));
   }
 
   public createPet(pet: Pet): Observable<Pet> {
     return this.http
-      .post<Pet>(this.endpoint, pet, this.httpOptions)
+      .post<Pet>(this.endpoint, pet)
       .pipe(catchError(this.handleError));
   }
 
   public editPet(pet: Pet): Observable<Pet> {
     return this.http
-      .put<Pet>(`${this.endpoint}/${pet.id}`, pet, this.httpOptions)
+      .put<Pet>(`${this.endpoint}/${pet.id}`, pet)
       .pipe(catchError(this.handleError));
   }
 
-  private handleError(error: HttpErrorResponse): Observable<any> {
+  private handleError(error: HttpErrorResponse) {
     return throwError(() => error);
   }
 }
