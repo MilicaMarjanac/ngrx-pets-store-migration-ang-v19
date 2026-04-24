@@ -1,9 +1,17 @@
 # Pets App
 
-Functionalities available: load, add and edit pet. Edit mode is activate by clicking on pet name or type. NgRx state management, reactive forms and json-server used. App is hosted on Heroku.
+Functionalities available: load, add and edit pet. Edit mode is activate by clicking on pet name or type. NgRx state management, reactive forms and json-server used.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.4 and
-[NgRx](https://ngrx.io/) version 14.0.1.
+This project has been migrated from Angular 14 to Angular 19 with a focus on adopting modern standalone and functional patterns.
+
+Key updates include:
+
+- Transition from NgModule-based architecture to standalone components, directives, and configuration (ApplicationConfig)
+- Adoption of the new dependency injection style using inject() across services, components, directives, and NgRx effects
+- Integration of provideHttpClient and functional provider APIs instead of module-based imports
+- Refactoring NgRx setup to align with newer patterns, including effects using inject() and improved state handling practices
+- Introduction of Angular Signals to replace parts of RxJS-based state handling, improving local reactivity and reducing reliance on manual subscriptions
+- Improved consistency in reactive forms and overall code structure
 
 ## Development server
 
