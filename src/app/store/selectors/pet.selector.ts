@@ -12,8 +12,6 @@ export const selectFeature = (state: AppState) => {
 export const selectFeaturePets = createSelector(
   selectFeature,
   (state: PetState) => {
-    return Object.keys(state.entities).map(
-      (id) => state.entities[parseInt(id, 10)]
-    );
+    return Object.values(state.entities).sort((a, b) => (a.id ?? 0) - (b.id ?? 0));
   }
 );

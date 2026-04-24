@@ -19,4 +19,4 @@ Run `ng serve` for a frontend dev server and for backend server navigate to `/js
 
 ## Demo
 
-[Pets Store](https://ngrx-store-pets-app.herokuapp.com/)
+...to be deployed soon..

@@ -23,36 +23,39 @@ export class PetEffects {
   private actions$ = inject(Actions);
 
   loadPets$ = createEffect(() =>
-    this.actions$.pipe(ofType(loadPets)).pipe(
+    this.actions$.pipe(
+      ofType(loadPets),
       switchMap(() => {
         return this.petService.getPets().pipe(
           map((pets) => loadPetsSuccess({ pets })),
-          catchError((error) => of(loadPetsFail(error))),
+          catchError((error) => of(loadPetsFail({ error }))),
         );
       }),
     ),
   );
 
   addPets$ = createEffect(() =>
-    this.actions$.pipe(ofType(addPet)).pipe(
+    this.actions$.pipe(
+      ofType(addPet),
       switchMap((action) => {
         return this.petService.createPet(action.pet).pipe(
           map((pet) => {
             return addPetSuccess({ pet });
           }),
-          catchError((error) => of(addPetFail(error))),
+          catchError((error) => of(addPetFail({ error }))),
         );
       }),
     ),
   );
   updatePets$ = createEffect(() =>
-    this.actions$.pipe(ofType(updatePet)).pipe(
+    this.actions$.pipe(
+      ofType(updatePet),
       switchMap((action) => {
         return this.petService.editPet(action.pet).pipe(
           map((pet) => {
             return updatePetSuccess({ pet });
           }),
-          catchError((error) => of(updatePetFail(error))),
+          catchError((error) => of(updatePetFail({ error }))),
         );
       }),
     ),

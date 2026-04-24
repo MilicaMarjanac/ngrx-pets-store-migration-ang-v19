@@ -39,36 +39,6 @@
       "id": 8,
       "name": "Zveko",
       "type": "Crow"
-    },
-    {
-      "id": 9,
-      "name": "Cvrle",
-      "type": "Snail"
-    },
-    {
-      "id": 10,
-      "name": "Mikica",
-      "type": "Chiuaua"
-    },
-    {
-      "id": 11,
-      "name": "Mina",
-      "type": "Cat"
-    },
-    {
-      "id": 12,
-      "name": "Sanja",
-      "type": "Snake"
-    },
-    {
-      "id": 13,
-      "name": "Goca",
-      "type": "Monkey"
-    },
-    {
-      "id": 14,
-      "name": "Boris",
-      "type": "Mouse"
     }
   ]
 }

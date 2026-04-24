@@ -10,7 +10,7 @@ import {
 } from "../actions/pet.actions";
 
 export interface PetState {
-  entities: { [id: number]: Pet };
+  entities: Record<string, Pet>;
 }
 export const initialState: PetState = {
   entities: {},
@@ -19,17 +19,11 @@ export const petsReducer = createReducer(
   initialState,
 
   on(loadPetsSuccess, (state, { pets }) => {
-    const entities = pets.reduce(
-      (entities: { [id: number]: Pet }, pet: Pet) => {
-        return {
-          ...entities,
-          [pet.id!.toString()]: pet,
-        };
-      },
-      {
-        ...state.entities,
-      },
-    );
+    const entities = pets.reduce((acc: Record<string, Pet>, pet: Pet) => {
+      if (pet.id == null) return acc;
+      acc[pet.id.toString()] = pet;
+      return acc;
+    }, {});
     return {
       ...state,
       entities,
