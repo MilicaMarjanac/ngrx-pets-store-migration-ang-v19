@@ -2,45 +2,46 @@
     <div class="row">
         <div class="col-sm">
             <h1>My Pets List</h1>
-            <form [formGroup]="form">
-                <button type="button" (click)="addPetFormField()">
-                    Add Pet
-                </button>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Pet Name</th>
-                            <th>Pet Type</th>
-                        </tr>
-                    </thead>
-                    <tbody formArrayName="pets">
-                        @for (pet of petsFormArray.controls; track pet.value.id ?? index;let index = $index) {
-                        <tr [formGroupName]="index">
-                            <td>
-                                <app-editable (updateField)="updateField(pet.value.id)">
-                                    <ng-template appViewMode>
-                                        {{ pet.value.name}}
-                                    </ng-template>
-                                    <ng-template appEditMode>
-                                        <input type="text" formControlName="name" />
-                                    </ng-template>
-                                </app-editable>
-                            </td>
-                            <td>
-                                <app-editable (updateField)="updateField(pet.value.id)">
-                                    <ng-template appViewMode>
-                                        {{ pet.value.type}}
-                                    </ng-template>
-                                    <ng-template appEditMode>
-                                        <input type="text" formControlName="type" />
-                                    </ng-template>
-                                </app-editable>
-                            </td>
-                        </tr>
-                        }
-                    </tbody>
-                </table>
-            </form>
+            <button type="button" (click)="addNewPet()">
+                Add Pet
+            </button>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Pet Name</th>
+                        <th>Pet Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (pet of draftPets(); track pet.id ?? $index) {
+                    <tr>
+                        <td>
+                            <app-editable (updateField)="savePet(pet)">
+                                <ng-template appViewMode>
+                                    {{ pet.name }}
+
+                                </ng-template>
+                                <ng-template appEditMode>
+                                    <input [value]="pet.name"
+                                        (input)="updateField(pet, 'name', $any($event.target).value)" />
+                                </ng-template>
+                            </app-editable>
+                        </td>
+                        <td>
+                            <app-editable (updateField)="savePet(pet)">
+                                <ng-template appViewMode>
+                                    {{ pet.type }}
+                                </ng-template>
+                                <ng-template appEditMode>
+                                    <input [value]="pet.type"
+                                        (input)="updateField(pet, 'type', $any($event.target).value)" />
+                                </ng-template>
+                            </app-editable>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

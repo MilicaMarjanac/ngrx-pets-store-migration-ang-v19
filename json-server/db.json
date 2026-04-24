@@ -23,7 +23,7 @@
     {
       "id": 5,
       "name": "Helena",
-      "type": "Buzzard"
+      "type": "Bat"
     },
     {
       "id": 6,
@@ -43,7 +43,32 @@
     {
       "id": 9,
       "name": "Cvrle",
-      "type": "maca"
+      "type": "Snail"
+    },
+    {
+      "id": 10,
+      "name": "Mikica",
+      "type": "Chiuaua"
+    },
+    {
+      "id": 11,
+      "name": "Mina",
+      "type": "Cat"
+    },
+    {
+      "id": 12,
+      "name": "Sanja",
+      "type": "Snake"
+    },
+    {
+      "id": 13,
+      "name": "Goca",
+      "type": "Monkey"
+    },
+    {
+      "id": 14,
+      "name": "Boris",
+      "type": "Mouse"
     }
   ]
 }
